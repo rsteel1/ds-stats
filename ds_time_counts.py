@@ -9,10 +9,19 @@ def main():
     
     # File upload section
     st.header("Paste Dreaming Spanish JSON")
-    st.write("This tool generates some graphs and calculates the net watch time for each day by subtracting the external watch time from the total watch time.")
-    st.write("You need to first save your dayWatchedTime and externalTime as .json files from the Dreaming Spanish progress page using the Developer Tools.")
-    st.write("Open Dev Tools -> Network -> Refresh the page -> Select dayWatchedTime -> Select Response -> Select 'View Raw or View Source' -> Copy/Paste to the respective boxes below")
-    st.write("Once complete, you can download the results as either .json or .csv to do whatever you like with it.")
+    st.markdown("""
+    This tool generates some graphs and calculates the net watch time for each day by subtracting the external watch time from the total watch time.
+
+    1. Go to Dreaming Spanish Progress page
+    2. Open Dev Tools -> Network -> Refresh the page -> Select `dayWatchedTime` -> Select `Response` -> Select 'View Raw or View Source' -> Copy/Paste to the respective boxes below
+    3. Do the same for 'externalTime'
+    4. Click 'Run Calculation' to generate the results
+    Once complete, you can download the net watch time results as either .json or .csv to do whatever you like with it.
+    We'll also make some graphs just for fun.
+    
+    Enjoy!
+    Your friendly neighbourhood Potato
+    """)
     
     st.write("Paste the raw contents of the dayWatchedTime response below:")    
     day_watched_time_data = st.text_area("dayWatchedTime", height=100)
