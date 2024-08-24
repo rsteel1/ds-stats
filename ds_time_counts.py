@@ -76,20 +76,13 @@ def main():
                 df['date'] = pd.to_datetime(df['date'])
                 df.set_index('date', inplace=True)
 
-                external_df = pd.DataFrame(external_data['externalTimes'])
-                external_df['date'] = pd.to_datetime(external_df['date'])
-                external_df.set_index('date', inplace=True)
-
-                df['externalTime'] = external_df['timeSeconds']
-
                 # Plot total watch time
                 st.header("Total Watch Time Over Time")
                 # Convert timeSeconds to hours
                 df['timeHours'] = df['timeSeconds'] / 3600
-                df['extenralTimeHours'] = df['externalTime'] / 3600
                 
                 # Plot total watch time and external watch time in hours
-                st.line_chart(df[['timeHours', 'externalTimeHours']], x_label="Date", y_label="Watch Time (hours)")
+                st.line_chart(df[['timeHours']], x_label="Date", y_label="Watch Time (hours)")
 
                 st.header("Goal Reached Over Time")
                 st.bar_chart(df['goalReached'])
