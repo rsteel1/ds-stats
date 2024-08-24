@@ -32,7 +32,7 @@ def main():
         # Output result to JSON file
         with open("net_platform_watch_time.json", "w") as json_output_file:
             json.dump(date_total_watch_time, json_output_file, indent=4)
-            st.success(f"Saved to {json_output_file.name}")
+            st.success(f"[Download JSON file](./net_platform_watch_time.json)")
 
         # Output result to CSV file
         with open("net_platform_watch_time.csv", "w", newline="") as csv_output_file:
@@ -40,7 +40,7 @@ def main():
             writer.writerow(["date", "total_watch_time"])
             for date, total_watch_time in date_total_watch_time.items():
                 writer.writerow([date, total_watch_time])
-            st.success(f"Saved to {csv_output_file.name}")
+            st.success(f"[Download CSV file](./net_platform_watch_time.csv)")
 
 if __name__ == "__main__":
     main()
