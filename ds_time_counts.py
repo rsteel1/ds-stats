@@ -1,14 +1,14 @@
 import json
-import csv
-import argparse
+import pandas as pd
 import streamlit as st
 from io import StringIO
+import csv
 
 def main():
     st.title("DS Net Time Generator")
     
     # File upload section
-    st.header("Upload Files")
+    st.header("Paste Dreaming Spanish JSON")
     st.write("This tool calculates the net watch time for each day by subtracting the external watch time from the total watch time.")
     st.write("You need to first save your dayWatchedTime and externalTime as .json files from the Dreaming Spanish progress page using the Developer Tools.")
     st.write("Open Dev Tools -> Network -> Refresh the page -> Select dayWatchedTime -> Select Response -> Select 'View Raw or View Source' -> Copy/Paste to the respective boxes below")
@@ -17,10 +17,10 @@ def main():
     # external_file = st.file_uploader("Upload external time JSON file", type="json")
 
     st.write("Paste the raw contents of the dayWatchedTime response below:")    
-    day_watched_time_data = st.text_area("dayWatchedTime", height=400)
+    day_watched_time_data = st.text_area("dayWatchedTime", height=100)
     
     st.write("Paste the raw contents of the externalTime response below:")
-    external_text_data = st.text_area("externalTime", height=400)
+    external_text_data = st.text_area("externalTime", height=100)
     
     # add an okay button to proceed
     if st.button("Calculate Net Watch Time"):
@@ -54,6 +54,7 @@ def main():
                     writer.writerow([date, total_watch_time])
                 csv_output.seek(0)
 
+                st.header("Net Watch Time Results")
                 # Provide download buttons
                 st.download_button(
                     label="Download JSON file",
@@ -68,6 +69,23 @@ def main():
                     file_name="net_platform_watch_time.csv",
                     mime="text/csv"
                 )
+
+                st.header("Some pretty graphs")
+                # Create DataFrame for visualization
+                df = pd.DataFrame(day_watched_time)
+                df['date'] = pd.to_datetime(df['date'])
+                df.set_index('date', inplace=True)
+
+                # Plot total watch time
+                st.header("Total Watch Time Over Time")
+                # Convert timeSeconds to hours
+                df['timeHours'] = df['timeSeconds'] / 3600
+                
+                # Plot total watch time in hours
+                st.line_chart(df['timeHours'])
+
+                st.header("Goal Reached Over Time")
+                st.bar_chart(df['goalReached'])
             except Exception as e:
                 st.error("Error parsing JSON data, please make sure the data is in the correct format")
                 return
