@@ -5,7 +5,7 @@ from io import StringIO
 import csv
 
 def main():
-    st.title("DS Net Time Generator")
+    st.title("DS Data Analysis")
     
     # File upload section
     st.header("Paste Dreaming Spanish JSON")
