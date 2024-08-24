@@ -11,15 +11,24 @@ def main():
     st.header("Upload Files")
     st.write("This tool calculates the net watch time for each day by subtracting the external watch time from the total watch time.")
     st.write("You need to first save your dayWatchedTime and externalTime as .json files from the Dreaming Spanish progress page using the Developer Tools.")
-    st.write("Open Dev Tools -> Network -> Refresh the page -> Select dayWatchedTime -> Select Response -> Select 'View Raw or View Source' -> Copy/Paste to a new .json file")
+    st.write("Open Dev Tools -> Network -> Refresh the page -> Select dayWatchedTime -> Select Response -> Select 'View Raw or View Source' -> Copy/Paste to the respective boxes below")
     st.write("Once complete, you can download the results as either .json or .csv to do whatever you like with it.")
-    day_watched_time_file = st.file_uploader("Upload day watched time JSON file", type="json")
-    external_file = st.file_uploader("Upload external JSON file", type="json")
+    # day_watched_time_file = st.file_uploader("Upload day watched time JSON file", type="json")
+    # external_file = st.file_uploader("Upload external time JSON file", type="json")
+
+    st.write("Paste the raw contents of the dayWatchedTime response below:")    
+    day_watched_time_data = st.text_area("dayWatchedTime", height=400)
     
-    if day_watched_time_file is not None and external_file is not None:
+    st.write("Paste the raw contents of the externalTime response below:")
+    external_data = st.text_area("externalTime", height=400)
+    
+    # read the text area inputs as json.load
+    
+    
+    if day_watched_time_data is not None and external_data is not None:
         # Process uploaded files
-        day_watched_time = json.load(day_watched_time_file)
-        external_data = json.load(external_file)
+        day_watched_time = json.loads(day_watched_time_data)
+        external_data = json.loads(external_data)
 
         date_total_watch_time = {}
 
