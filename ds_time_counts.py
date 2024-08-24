@@ -22,52 +22,58 @@ def main():
     st.write("Paste the raw contents of the externalTime response below:")
     external_data = st.text_area("externalTime", height=400)
     
-    # read the text area inputs as json.load
-    
-    
-    if day_watched_time_data is not None and external_data is not None:
-        # Process uploaded files
-        day_watched_time = json.loads(day_watched_time_data)
-        external_data = json.loads(external_data)
+    # add an okay button to proceed
+    if st.button("Calculate Net Watch Time"):
+        if day_watched_time_data != "" and external_data != "":
+            # Process uploaded files
+            try:
+                day_watched_time_data = json.loads(day_watched_time_data)
+                external_data = json.loads(external_data)
+            except Exception as e:
+                st.error("Error parsing JSON data, please make sure the data is in the correct format")
+                return
+            
+            day_watched_time = json.loads(day_watched_time_data)
+            external_data = json.loads(external_data)
 
-        date_total_watch_time = {}
+            date_total_watch_time = {}
 
-        for day in day_watched_time:
-            day_date = day["date"]
-            day_watch_time = day["timeSeconds"]
-            date_total_watch_time[day_date] = day_watch_time
+            for day in day_watched_time:
+                day_date = day["date"]
+                day_watch_time = day["timeSeconds"]
+                date_total_watch_time[day_date] = day_watch_time
 
-        for external_entry in external_data["externalTimes"]:
-            external_date = external_entry["date"]
-            external_time = external_entry["timeSeconds"]
-            if external_date in date_total_watch_time:
-                date_total_watch_time[external_date] -= external_time
+            for external_entry in external_data["externalTimes"]:
+                external_date = external_entry["date"]
+                external_time = external_entry["timeSeconds"]
+                if external_date in date_total_watch_time:
+                    date_total_watch_time[external_date] -= external_time
 
-        # Generate JSON content
-        json_output = json.dumps(date_total_watch_time, indent=4)
-        
-        # Generate CSV content
-        csv_output = StringIO()
-        writer = csv.writer(csv_output)
-        writer.writerow(["date", "total_watch_time"])
-        for date, total_watch_time in date_total_watch_time.items():
-            writer.writerow([date, total_watch_time])
-        csv_output.seek(0)
+            # Generate JSON content
+            json_output = json.dumps(date_total_watch_time, indent=4)
+            
+            # Generate CSV content
+            csv_output = StringIO()
+            writer = csv.writer(csv_output)
+            writer.writerow(["date", "total_watch_time"])
+            for date, total_watch_time in date_total_watch_time.items():
+                writer.writerow([date, total_watch_time])
+            csv_output.seek(0)
 
-        # Provide download buttons
-        st.download_button(
-            label="Download JSON file",
-            data=json_output,
-            file_name="net_platform_watch_time.json",
-            mime="application/json"
-        )
-        
-        st.download_button(
-            label="Download CSV file",
-            data=csv_output.getvalue(),
-            file_name="net_platform_watch_time.csv",
-            mime="text/csv"
-        )
+            # Provide download buttons
+            st.download_button(
+                label="Download JSON file",
+                data=json_output,
+                file_name="net_platform_watch_time.json",
+                mime="application/json"
+            )
+            
+            st.download_button(
+                label="Download CSV file",
+                data=csv_output.getvalue(),
+                file_name="net_platform_watch_time.csv",
+                mime="text/csv"
+            )
 
 if __name__ == "__main__":
     main()
