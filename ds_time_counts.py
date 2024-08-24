@@ -14,13 +14,14 @@ def main():
 
     1. Go to Dreaming Spanish Progress page
     2. Open Dev Tools -> Network -> Refresh the page -> Select `dayWatchedTime` -> Select `Response` -> Select 'View Raw or View Source' -> Copy/Paste to the respective boxes below
-    3. Do the same for 'externalTime'
+    3. Do the same for `externalTime`
     4. Click 'Run Calculation' to generate the results
     Once complete, you can download the net watch time results as either .json or .csv to do whatever you like with it.
     We'll also make some graphs just for fun.
     
     Enjoy!
-    Your friendly neighbourhood Potato
+    
+    Your friendly neighbourhood Potato 🥔
     """)
     
     st.write("Paste the raw contents of the dayWatchedTime response below:")    
